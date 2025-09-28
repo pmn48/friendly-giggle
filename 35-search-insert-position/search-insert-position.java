@@ -7,9 +7,12 @@ class Solution { // BINARY SEARCH ALGO
 
     private int binarySearch(int[] nums, int target, int lo, int hi) {
 
-        if (lo > hi) return -1; // invalid case
+        // invalid case: this is when target is greater than all elements in num, pushing mid up
+        // to the point where mid will be greater than hi
+        // append target to the end index, at this point is high
+        if (lo > hi) return lo; 
 
-        // base case: 1 item in array
+        // this is when the target is smaller than all elements in num, pushing mid equal to lo
         if (lo == hi) {
             if (target <= nums[hi]) return hi;
             else if (target > nums[hi]) return hi + 1; 
