@@ -17,39 +17,48 @@ class Solution {
         return max;
     }
 
-    /* O(n^2)
+
+    /*// DIVIDE AND CONQUER
     public int maxSubArray(int[] nums) {
-        int n = nums.length;
-        if (n == 1) return nums[0];
-        int result = Integer.MIN_VALUE;
-        for (int i = 1; i < n; i++) {
-            result = Math.max(result, sumSubArray(nums, i));
-        }
-        return result;
+        return maxSubArrayRecurse(nums, 0, nums.length - 1);
     }
 
-    /**A helper function to calculate the max sum of a subarray of k elements 
-    private static int sumSubArray(int[] nums, int k) {
-        int n = nums.length;
-        if (k > n) return Integer.MAX_VALUE; // error case
+    private int maxSubArrayRecurse(int[] nums, int lo, int hi) {
+    // Base Case
+    if (lo == hi) return nums[lo]; // 1 element
 
-        // calculate the sum of the first subarray with k elements
-        int sum = 0;
-        for (int j = 0; j < k; j++) {
-            sum += nums[j];
-        }
+        int mid = lo + (hi - lo) / 2;
+        int left = maxSubArrayRecurse(nums, lo, mid);
+        int right = maxSubArrayRecurse(nums, mid + 1, hi);
 
-        // calculate other sums of other subarrays while traversing down the array
-        for (int i = 1; i <= (n - k); i++) {
-            sum = Math.max(sum, sum - nums[i -1] + nums[i+k-1]);
-        }
-        return sum;
+        // Find sum of the Subarray that crosses the mid point
+        int midpoint = maxMidPoint(nums, lo, mid, hi);
+
+        // return the max sum among the calculated value
+        return Math.max(Math.max(left, right), midpoint);
+
     }
 
-    /** Sliding Window Approach: sum[start + 1, end + 1] = sum[start + end] - A[start] + A[end+1]
-    k = number of elements in subarray. 1 <= k <= n? SO HAVE A HELPER FUNCTION TO INDICATE k  AS A VARIABLE
-    MAIN FUNC: Have a for loop to iterate through k
-        result = Max (result, sum - nums[i] + nums[k+1])
+    private int maxMidPoint(int[] nums, int lo, int mid, int hi) {
+        
+        // find the max on the left half
+        int current = nums[mid];
+        int leftMax = nums[mid]; 
+        for (int i = mid; i >= lo; i--) {
+            leftMax = Math.max(leftMax + nums[i], nums[i]);
+            current = Math.max(current, leftMax);
+        }
 
-     */
+        // find the max on the right half
+        int rightMax = nums[mid + 1]; 
+        current = nums[mid + 1];
+        for (int i = mid + 1; i <= hi; i++) {
+            rightMax = Math.max(rightMax + nums[i], nums[i]);
+            current = Math.max(current, rightMax);
+        }
+
+        // The maximum crossing sum is the sum of the best left and right parts.
+        return leftMax + rightMax;
+    }*/  
 }
+
