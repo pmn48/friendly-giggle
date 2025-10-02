@@ -24,7 +24,7 @@ class Solution {
 
          // find index of max value in input array
         int ptr = findMax(nums, lo, hi);
-        System.out.println(ptr);
+        //System.out.println(ptr);
         // construct a root node with the max value 
         TreeNode root = new TreeNode(nums[ptr]);
 
