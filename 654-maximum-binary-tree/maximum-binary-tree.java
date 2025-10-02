@@ -20,7 +20,7 @@ class Solution {
 
     private TreeNode constructBinary(int[] nums, int lo, int hi) {
         // Base Case
-        if (lo > hi) return null; // empty
+        if (lo > hi) return null; // just 1 node as a leaf
 
          // find index of max value in input array
         int ptr = findMax(nums, lo, hi);
