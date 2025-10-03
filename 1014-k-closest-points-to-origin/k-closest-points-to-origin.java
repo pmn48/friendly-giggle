@@ -55,5 +55,6 @@ class Solution {
 }
 
 //Approach 1: sort the points based on distance (ascending), then return the first k elements
-// Approach 2: quickselect(i) up to k, 
+// Approach 2: quickselect(i) up to k, add elements into a res array
+// Approach 3: use min-heap of size k
 
