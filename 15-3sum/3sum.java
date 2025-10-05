@@ -4,9 +4,12 @@ class Solution {
        // sort the array first 0(nlogn)
        Arrays.sort(nums);
 
-       Set<List<Integer>> res = new HashSet<>();
+       List<List<Integer>> res = new ArrayList<>();
        
        for (int i = 0; i <= nums.length - 2; i++) { // only go up to that since have 2 more ptrs = account for left and right
+            // skip duplicate of nums[i]
+                if (i > 0 && nums[i] == nums[i-1]) continue; // nums[i-1] must be checked already
+
             // reset for every element
             int left = i+1;
             int right = nums.length - 1;
@@ -20,10 +23,15 @@ class Solution {
                     List<Integer> temp = createTempList(nums, left, i, right);
                     res.add(temp);
                     left++;
+                    right--;
+
+                    // if nums[left] or nums[right] have duplicates, keep changing them
+                    while (right > left && nums[left] == nums[left-1]) left++; // check from left
+                    while (right > left && nums[right] == nums[right+1]) right--; // check from right
                 }
             }    
        }
-       return new ArrayList<>(res);
+       return res;
     }
 
     /**A helper function to add elements from an array to a list */
@@ -33,7 +41,7 @@ class Solution {
             res.add(nums[j]);
             res.add(nums[k]);
         // sort the array in ascending order so that duplicates can be identified
-        Collections.sort(res);
+        //Collections.sort(res);
         return res;
     }
 
