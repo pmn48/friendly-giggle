@@ -2,23 +2,17 @@ class Solution {
     public int longestPalindrome(String s) {
         int len = s.length();
         if (len <= 1) return len;
-        TreeMap<Character, Integer> letterTable = new TreeMap<>();
-        char c;
+        Map<Character, Integer> letterTable = new HashMap<>();
         int oddNumOfLetter = 0; // keep track of # of odd letters in s
 
         // loop through each char to update frequency
-        for (int i = 0; i < len; i++) {
-            c = s.charAt(i);
-            if (letterTable.containsKey(c)) {
-                int count = letterTable.get(c);
-                letterTable.put(c, count+1); // increase count
-            } // new entry 
-            else {
-                letterTable.put(c, 1);
-            }
+        for (char c: s.toCharArray()) {
+            // 
+            int count = letterTable.getOrDefault(c, 0) + 1;
+            letterTable.put(c, count);
 
             // update the # of odd letter
-            if (letterTable.get(c)%2 == 0) {
+            if (count%2 == 0) {
                 oddNumOfLetter--;
             } else {
                 oddNumOfLetter++;
@@ -29,10 +23,8 @@ class Solution {
         // return the longest length for palindrome
         if (oddNumOfLetter > 0) { // there is letter(s) with odd occurence, so one of the odd is excluded 
             return len - oddNumOfLetter + 1;
-        } else {
-            return len;
         }
-        
+        return len;
     }
 }
 
