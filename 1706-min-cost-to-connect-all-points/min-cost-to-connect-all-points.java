@@ -7,28 +7,30 @@ class Solution {
 
         // PRIM'S ALGO
         int res = 0;
-        Set<Integer> visit = new HashSet<>();
+        Set<Integer> visit = new HashSet<>(); // keeps track of nodes (points) that are already part of our growing MST.
 
-        // min heap to fins the smallest distance
+        // min heap to find the smallest distance that stores all potential edges [cost, destinationNode]
         // Provide a comparator that compares arrays based on their first element (distance)
         Queue<int[]> minHeap = new PriorityQueue<>((a,b) -> Integer.compare(a[0], b[0]));
-        minHeap.add(new int[] {0,0});
+        minHeap.add(new int[] {0,0}); // start the algorithm by adding Node 0 to the heap with a cost of 0
 
         // update MST based on weight of edges
+        // loop continues until all nodes have been added to our MST
         while (visit.size() < len) {
             // pop the neighbor with minimum edge weight
-            int[] minEdge = minHeap.poll(); 
+            int[] minEdge = minHeap.poll(); // always get the edge with the smallest cost first
             int weight = minEdge[0]; 
             int node = minEdge[1];
 
-            if (visit.contains(node)) continue; // skip if the node is visited
-            res += weight; // if not
+            if (visit.contains(node)) continue; // skip if the node is visited (multiple edges leading to the same node. if visited, a cheaper path already found)
+            res += weight; // if the node is new, accept this edge
             visit.add(node);
 
-            // Iterate through the neighbors and Add to MST
+            // Iterate through the neighbors of node and add to MIN HEAP to examine the cost of these new edges later
             for (int[] neighborList: adj.get(node)) {
                 int edgeCost = neighborList[0];
                 int nei = neighborList[1];
+                // only add nodes that are not visited yet
                 if (!visit.contains(nei)) {
                     minHeap.add(new int[] {edgeCost, nei});
                 }
@@ -67,7 +69,6 @@ class Solution {
                 adj.get(j).add(arr2);
             }   
         }
-
         return adj;
     }
 }
@@ -75,6 +76,7 @@ class Solution {
 // Greedy Algo: for the manhattan distance to be minimized, choose the one with either closest x or closest y -> smallest edge value
 // create all the edges
 // Apply Prim's algo: choose a starting vetex.
-    // Examine each vertex neighbors: choose one with minimum distance and add the neighbor to set of MST
-    //until all points are moved to the final set
+    // Examine its neighbors: choose the edge with minimum distance and add that neighbor j to set of MST (visited)
+    // Then for that node j, examine its neighbors and add all potential edges to heap so the minimum one can be put later
+    // continue until all points are moved to the final set
 // O(n2 logn): n2 because have to create all edges for n points; log n comes from min heap
