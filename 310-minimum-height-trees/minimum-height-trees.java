@@ -40,7 +40,7 @@ class Solution {
         return new ArrayList<>(leaves);
     }
 
-    /**
+    /** Helper function to build adjacent list that demostrate [ [nei 1, nei 2], [nei 3, nei 4]]
      */
     public static List<List<Integer>> createAdjacentList(int n, int[][] edges) {
         List<List<Integer>> adj = new ArrayList<>();
