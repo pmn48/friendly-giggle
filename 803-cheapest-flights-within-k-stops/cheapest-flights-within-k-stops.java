@@ -4,10 +4,10 @@ class Solution {
         // create adjacency list that shows [ src1: [ {dest, price} ] ]
         List<List<int[]>> adj = createWeightedAdjacencyList(n, flights);
         
-        // A queue for visiting
+        // a queue hold all the dest we can fly to at the current number of stops.
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[] {src,0}); // the price from source to itself
-        // cost vector to keep track of minimum cost to reach node i
+        // cost vector to keep track of minimum cost to reach node i from src
         int[] minCost = new int[n];
         Arrays.fill(minCost, Integer.MAX_VALUE);
         // number of stops
@@ -15,23 +15,26 @@ class Solution {
 
         while (!queue.isEmpty() && stop <= k) {
             int currentLen = queue.size();
+
+            // only loop through the nodes at current level
             for (int i = 0; i < currentLen; i++) {
-                int[] curSrcArr = queue.poll();
-                int curSrc = curSrcArr[0];
-                int curPrice = curSrcArr[1];
-                // iterate throught the source's dest and price
-                for (int[] destination: adj.get(curSrc)) {
+                int[] curDestArr = queue.poll();
+                int curDest = curDestArr[0];
+                int curPrice = curDestArr[1];
+                // iterate throught the flights from curDest to dest and price
+                for (int[] destination: adj.get(curDest)) {
                     int dest = destination[0];
                     int price = destination[1];
 
-                    // if new price is greater, dont choose to include this destination as a route, as another cheaper route to this destination is available
+                    // // If the new path to this 'dest' (by going through 'curDest') is more expensive 
+                    // than the *cheapest path* we've already found to 'dest', then skip this path.
                     if (price + curPrice >= minCost[dest]) continue;
                     // if new price is smaller, choose this route and update the min cost to get to this dest in minCost array
                     minCost[dest] = price + curPrice;
                     queue.add(new int[] {dest, minCost[dest]});
                 }
             }
-            stop++;
+            stop++; // going from 1, 2,.. to k stops in total
         }
         //printAdjList(adj);
         return minCost[dst] == Integer.MAX_VALUE ? -1 : minCost[dst];
